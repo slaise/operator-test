@@ -1,0 +1,7 @@
+domain: company.org
+repo: example.com/m
+resources:
+- group: identity
+  kind: UserIdentity
+  version: v1
+version: "2"

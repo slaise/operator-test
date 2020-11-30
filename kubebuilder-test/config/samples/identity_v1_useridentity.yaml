@@ -1,0 +1,10 @@
+apiVersion: identity.company.org/v1
+kind: UserIdentity
+metadata:
+  name: useridentity-sample
+spec:
+  # Add fields here
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: event-view
