@@ -1,0 +1,16 @@
+/.*/
+!/.build/dump-version
+!/.github/
+!/.vscode/settings-default.json
+
+# Generated when serving docs locally
+docs/style.css
+docs/mathjax-config.js
+
+node_modules/
+dist/
+target/
+*.iml
+
+yarn.lock
+/action-container/src/main/resources/declarative-infra-version
