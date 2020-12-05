@@ -20,13 +20,13 @@ import (
 	"context"
 	"fmt"
 
+	identityv1 "example.com/m/api/v1"
 	"github.com/go-logr/logr"
+	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-corev1 "k8s.io/api/core/v1"
-	identityv1 "example.com/m/api/v1"
 )
 
 // UserIdentityReconciler reconciles a UserIdentity object
@@ -49,7 +49,7 @@ func (r *UserIdentityReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	user := "jenny" // pretend we get the name
+	user := "jenny"      // pretend we get the name
 	project := "project" // pretend we get the project name
 
 	var serviceAccount corev1.ServiceAccount
@@ -83,7 +83,6 @@ func (r *UserIdentityReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error
 	if err != nil {
 		return ctrl.Result{}, nil
 	}
-
 
 	return ctrl.Result{}, nil
 }

@@ -1,0 +1,23 @@
+apiVersion: identity.company.org/v2
+kind: UserIdentityV2
+metadata:
+  name: useridentityv2-sample
+spec:
+  template:
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: {{ user }}
+      subjects:
+        - kind: ServiceAccount
+          name: {{ serviceAccountName }}
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: event-view
+    - apiVersion: core.cnrm.cloud.google.com/v1beta1
+      kind: ServiceAccount
+      metadata:
+        name: {{ serviceAccountName }}
+      annotations:
+        iam.gke.io/gcp-service-account: {{ user }}@{{ project }}.iam.gserviceaccount.com

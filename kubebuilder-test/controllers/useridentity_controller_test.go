@@ -3,19 +3,19 @@ package controllers
 import (
 	"context"
 
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	rbacv1 "k8s.io/api/rbac/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("GroupRoleBinding", func() {
 
 	var reconciler UserIdentityReconciler
 
-	var key types.NamespacedName
+	//var key types.NamespacedName
 	var req types.NamespacedName
 
 	BeforeEach(func() {
@@ -26,9 +26,9 @@ var _ = Describe("GroupRoleBinding", func() {
 		k8sClient = k8sManager.GetClient()
 
 		reconciler = UserIdentityReconciler{
-				Client: k8sClient,
-				Log:    ctrl.Log.WithName("controllers").WithName("UserIdentity"),
-				Scheme: k8sManager.GetScheme(),
+			Client: k8sClient,
+			Log:    ctrl.Log.WithName("controllers").WithName("UserIdentity"),
+			Scheme: k8sManager.GetScheme(),
 		}
 
 		Expect(reconciler.SetupWithManager(k8sManager)).NotTo(HaveOccurred(), "failed to set up the manager")

@@ -1,0 +1,48 @@
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentities
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentities/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentityv2s
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentityv2s/status
+  verbs:
+  - get
+  - patch
+  - update

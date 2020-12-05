@@ -1,0 +1,20 @@
+# permissions for end users to view useridentityv2s.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: useridentityv2-viewer-role
+rules:
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentityv2s
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentityv2s/status
+  verbs:
+  - get

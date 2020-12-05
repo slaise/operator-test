@@ -4,4 +4,10 @@ resources:
 - group: identity
   kind: UserIdentity
   version: v1
+- group: identity
+  kind: UserIdentity
+  version: v2
+- group: identity
+  kind: UserIdentityV2
+  version: v2
 version: "2"

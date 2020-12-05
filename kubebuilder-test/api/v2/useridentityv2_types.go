@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1
+package v2
 
 import (
+	"github.com/operator-framework/operator-lib/status"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,8 +25,8 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// UserIdentitySpec defines the desired state of UserIdentity
-type UserIdentitySpec struct {
+// UserIdentityV2Spec defines the desired state of UserIdentityV2
+type UserIdentityV2Spec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
@@ -33,32 +34,37 @@ type UserIdentitySpec struct {
 	RoleRef rbacv1.RoleRef `json:"roleRef,omitempty"`
 }
 
-// UserIdentityStatus defines the observed state of UserIdentity
-type UserIdentityStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+// UserIdentityV2Status defines the observed state of UserIdentityV2
+type UserIdentityV2Status struct {
+
+	// Conditions is the list of error conditions for this resource
+	Conditions status.Conditions `json:"conditions,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// UserIdentity is the Schema for the useridentities API
-type UserIdentity struct {
+// UserIdentityV2 is the Schema for the useridentityv2s API
+type UserIdentityV2 struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   UserIdentitySpec   `json:"spec,omitempty"`
-	Status UserIdentityStatus `json:"status,omitempty"`
+	Spec   UserIdentityV2Spec   `json:"spec,omitempty"`
+	Status UserIdentityV2Status `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// UserIdentityList contains a list of UserIdentity
-type UserIdentityList struct {
+// UserIdentityV2List contains a list of UserIdentityV2
+type UserIdentityV2List struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []UserIdentity `json:"items"`
+	Items           []UserIdentityV2 `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&UserIdentity{}, &UserIdentityList{})
+	SchemeBuilder.Register(&UserIdentityV2{}, &UserIdentityV2List{})
+}
+
+func (o *UserIdentityV2) GetConditions() *status.Conditions {
+	return &o.Status.Conditions
 }
