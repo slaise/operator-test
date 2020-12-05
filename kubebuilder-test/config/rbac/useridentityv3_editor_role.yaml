@@ -1,0 +1,24 @@
+# permissions for end users to edit useridentityv3s.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: useridentityv3-editor-role
+rules:
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentityv3s
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentityv3s/status
+  verbs:
+  - get

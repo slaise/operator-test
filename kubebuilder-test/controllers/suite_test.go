@@ -32,6 +32,7 @@ import (
 
 	identityv1 "example.com/m/api/v1"
 	identityv2 "example.com/m/api/v2"
+	identityv3 "example.com/m/api/v3"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -70,6 +71,9 @@ var _ = BeforeSuite(func(done Done) {
 	Expect(err).NotTo(HaveOccurred())
 
 	err = identityv2.AddToScheme(scheme.Scheme)
+	Expect(err).NotTo(HaveOccurred())
+
+	err = identityv3.AddToScheme(scheme.Scheme)
 	Expect(err).NotTo(HaveOccurred())
 
 	// +kubebuilder:scaffold:scheme
