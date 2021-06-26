@@ -32,6 +32,7 @@ import (
 	"github.com/operator-framework/operator-lib/status"
 	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer/yaml"
@@ -40,6 +41,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
+	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	identityv3 "example.com/m/api/v3"
@@ -85,6 +87,25 @@ func (r *UserIdentityV3Reconciler) Reconcile(req ctrl.Request) (ctrl.Result, err
 	log.V(10).Info(fmt.Sprintf("Create Resources for User:%s, Project:%s", user, project))
 
 	t := template.New("")
+	finalizers := userIdentity.GetFinalizers()
+	if userIdentity.GetDeletionTimestamp().IsZero() {
+		if !containsString(finalizers, "finalizer.userIdentity") {
+			userIdentity.SetFinalizers(append(finalizers, "finalizer.userIdentity"))
+			if err := r.Update(ctx, &userIdentity); err != nil {
+				return ctrl.Result{}, fmt.Errorf("failed executing finalizer: %w", err)
+			}
+		}
+	}
+
+	if containsString(finalizers, "finalizer.userIdentity") {
+		// Finalizer logic
+		log.Info("Executing finalizer in UserIdentityV3")
+
+		userIdentity.SetFinalizers(removeString(finalizers, "finalizer.userIdentity"))
+		if err := r.Update(ctx, &userIdentity); err != nil {
+			return ctrl.Result{}, fmt.Errorf("unable to remove finalizer from obj: %w", err)
+		}
+	}
 
 	// Parse the template in the yamls
 	for i, obj := range userIdentity.Spec.Template {
@@ -182,6 +203,13 @@ func (r *UserIdentityV3Reconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&identityv2.UserIdentityV2{}).
+		WithEventFilter(predicate.Or(
+			predicate.GenerationChangedPredicate{},
+			predicate.NewPredicateFuncs(func(meta metav1.Object, object runtime.Object) bool {
+				obj, ok := object.(Object)
+				return ok && IsStatusConditionFalse(*obj.GetConditions(), metav1.ConditionFalse)
+			}),
+		)).
 		Watches(&source.Channel{Source: ch, DestBufferSize: 1024}, &handler.EnqueueRequestForObject{}).
 		Complete(r)
 }
@@ -203,4 +231,39 @@ func (r *UserIdentityV3Reconciler) SetConditionFail(ctx context.Context, err err
 		}
 	}
 	return nil
+}
+
+type Object interface {
+	runtime.Object
+	metav1.Object
+	GetConditions() *[]metav1.ConditionStatus
+}
+
+func IsStatusConditionFalse(statuses []metav1.ConditionStatus, condition metav1.ConditionStatus) bool {
+	for _, status := range statuses {
+		if status == condition {
+			return true
+		}
+	}
+	return false
+}
+
+// containsString returns true if the string is contained in the slice
+func containsString(slice []string, s string) bool {
+	for _, item := range slice {
+		if item == s {
+			return true
+		}
+	}
+	return false
+}
+
+func removeString(slice []string, s string) (result []string) {
+	for _, item := range slice {
+		if item == s {
+			continue
+		}
+		result = append(result, item)
+	}
+	return
 }

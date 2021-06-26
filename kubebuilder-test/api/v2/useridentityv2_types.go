@@ -31,6 +31,7 @@ type UserIdentityV2Spec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// RoleRef is the target ClusterRole reference
+	// +kubebuilder:printcolumn
 	RoleRef rbacv1.RoleRef `json:"roleRef,omitempty"`
 }
 

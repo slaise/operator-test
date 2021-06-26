@@ -46,3 +46,23 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentityv3s
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - identity.company.org
+  resources:
+  - useridentityv3s/status
+  verbs:
+  - get
+  - patch
+  - update

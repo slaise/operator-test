@@ -24,6 +24,10 @@ import (
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+type TemplateObject struct {
+	// +kubebuilder:pruning:PreserveUnknownFields
+	unstructured.Unstructured `json:",inline"`
+}
 
 // UserIdentityV3Spec defines the desired state of UserIdentityV3
 type UserIdentityV3Spec struct {
@@ -31,7 +35,11 @@ type UserIdentityV3Spec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Template is a list of resources to instantiate per repository in Governator
-	Template []unstructured.Unstructured `json:"template,omitempty"`
+	Template []TemplateObject `json:"template,omitempty"`
+
+	// Name is a test field for webhook validation
+	// +kubebuilder:validation:Required
+	name string `json:"name"`
 }
 
 // UserIdentityV3Status defines the observed state of UserIdentityV3

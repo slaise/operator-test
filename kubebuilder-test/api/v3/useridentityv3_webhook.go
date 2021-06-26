@@ -34,7 +34,7 @@ func (r *UserIdentityV3) SetupWebhookWithManager(mgr ctrl.Manager) error {
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 
-// +kubebuilder:webhook:path=/mutate-identity-company-org-v3-useridentityv3,mutating=true,failurePolicy=fail,groups=identity.company.org,resources=useridentityv3s,verbs=create;update,versions=v3,name=museridentityv3.kb.io
+// +kubebuilder:webhook:path=/mutate-identity-company-org-v3-useridentityv3,mutating=true,failurePolicy=fail,groups=identity.company.org,resources=useridentityv3s,verbs=create;update,versions=v3,name=museridentityv3.kb.io,sideEffects=none,admissionReviewVersions=[]
 
 var _ webhook.Defaulter = &UserIdentityV3{}
 
@@ -46,7 +46,7 @@ func (r *UserIdentityV3) Default() {
 }
 
 // TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
-// +kubebuilder:webhook:verbs=create;update,path=/validate-identity-company-org-v3-useridentityv3,mutating=false,failurePolicy=fail,groups=identity.company.org,resources=useridentityv3s,versions=v3,name=vuseridentityv3.kb.io
+// +kubebuilder:webhook:verbs=create;update,path=/validate-identity-company-org-v3-useridentityv3,mutating=false,failurePolicy=fail,groups=identity.company.org,resources=useridentityv3s,versions=v3,name=vuseridentityv3.kb.io,sideEffects=none,admissionReviewVersions=[]
 
 var _ webhook.Validator = &UserIdentityV3{}
 
