@@ -1,0 +1,24 @@
+domain: identity.company.com
+layout:
+- go.kubebuilder.io/v3
+- declarative.go.kubebuilder.io/v1
+plugins:
+  declarative.go.kubebuilder.io/v1:
+    resources:
+    - domain: identity.company.com
+      group: addons
+      kind: UserIdentity
+      version: v1alpha1
+projectName: kdp-user-identity
+repo: identity.company.com/useridentity-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: identity.company.com
+  group: addons
+  kind: UserIdentity
+  path: identity.company.com/useridentity-operator/api/v1alpha1
+  version: v1alpha1
+version: "3"

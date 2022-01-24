@@ -1,0 +1,24 @@
+# permissions for end users to edit useridentities.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: useridentity-editor-role
+rules:
+- apiGroups:
+  - addons.identity.company.com
+  resources:
+  - useridentities
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - addons.identity.company.com
+  resources:
+  - useridentities/status
+  verbs:
+  - get

@@ -1,0 +1,8 @@
+apiVersion: addons.identity.company.com/v1alpha1
+kind: UserIdentity
+metadata:
+  name: useridentity-sample
+  namespace: default
+spec:
+  user: lai
+  serviceAccountName: lai
